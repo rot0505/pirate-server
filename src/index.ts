@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', routes)
 
 mongoose.Promise = Promise
+// const mongoUri = 'mongodb://localhost/pirate'
 const mongoUri = process.env.MONGO_HOST
 mongoose?.connect(mongoUri)
 mongoose?.connection.on('error', () => {
