@@ -6,7 +6,6 @@ const login = async (req, res, next) => {
     signedMsg
   } = req.body
 
-  console.log('req.body', req.body)
   const usr = await userService.findUserByAccount(account)
   if (!usr) {
     //must add validate signMsg

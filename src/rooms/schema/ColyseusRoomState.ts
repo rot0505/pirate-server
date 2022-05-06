@@ -28,6 +28,7 @@ export class ColyseusNetworkedUser extends Schema {
     @type("boolean") connected: boolean;
     @type("number") timestamp: number;
     @type({ map: "string" }) attributes = new MapSchema<string>();
+    @type("string") avatarUrl: string = ''
 }
 
 export class ColyseusRoomState extends Schema {

@@ -144,7 +144,6 @@ export class PirateRoom extends Room<ColyseusRoomState> {
 
         // Set the callback for the "createEntity" message
         this.onMessage("createEntity", (client, creationMessage) => {
-            console.log('called createEntity')
             // Generate new UID for the entity
             let entityViewID = generateId();
             let newEntity = new ColyseusNetworkedEntity().assign({
@@ -157,7 +156,6 @@ export class PirateRoom extends Room<ColyseusRoomState> {
 
             newEntity.timestamp = parseFloat(this.serverTime.toString());
 
-            console.log('creationMessage.attributes', creationMessage.attributes)
             for (let key in creationMessage.attributes) {
                 if (key === "creationPos") {
                     newEntity.xPos = parseFloat(creationMessage.attributes[key][0]);
@@ -199,6 +197,7 @@ export class PirateRoom extends Room<ColyseusRoomState> {
             if (customLogic != null)
                 customLogic.InitializeLogic(this, options);
         }
+
         catch (error) {
             logger.error("Error with custom room logic: " + error);
         }
@@ -222,10 +221,11 @@ export class PirateRoom extends Room<ColyseusRoomState> {
     // Callback when a client has joined the room
     onJoin(client: Client, options: any) {
         logger.info(`Client joined!- ${client.sessionId} ***`);
-
+        console.log('options', options)
         let newNetworkedUser = new ColyseusNetworkedUser().assign({
             id: client.id,
             sessionId: client.sessionId,
+            avatarUrl: options.avatarUrl
         });
 
         this.state.networkedUsers.set(client.sessionId, newNetworkedUser);
