@@ -231,6 +231,11 @@ export class PirateRoom extends Room<ColyseusRoomState> {
         this.state.networkedUsers.set(client.sessionId, newNetworkedUser);
 
         client.send("onJoin", newNetworkedUser);
+
+        this.onMessage("onChatMsg", (client, chatMsg) => {
+            console.log('chatMsg', chatMsg)
+            this.broadcast("onChatMsg", chatMsg, { except: client });
+        });
     }
 
     /**
