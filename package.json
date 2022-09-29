@@ -26,6 +26,7 @@
   "dependencies": {
     "@colyseus/monitor": "^0.14.0",
     "@colyseus/social": "^0.10.9",
+    "agora-access-token": "^2.0.4",
     "bluebird": "^3.7.2",
     "body-parser": "^1.20.0",
     "colyseus": "^0.14.0",
