@@ -2,6 +2,7 @@ import { Room, Client, generateId } from "colyseus";
 import { ColyseusRoomState, ColyseusNetworkedEntity, ColyseusNetworkedUser } from "./schema/ColyseusRoomState";
 
 const logger = require("../helpers/logger");
+const Agora = require("agora-access-token");
 
 export class PirateRoom extends Room<ColyseusRoomState> {
     clientEntities = new Map<string, string[]>();
@@ -230,6 +231,7 @@ export class PirateRoom extends Room<ColyseusRoomState> {
 
         this.state.networkedUsers.set(client.sessionId, newNetworkedUser);
 
+
         client.send("onJoin", newNetworkedUser);
 
         this.onMessage("onChatMsg", (client, chatMsg) => {
@@ -239,6 +241,24 @@ export class PirateRoom extends Room<ColyseusRoomState> {
         this.onMessage("onFurniture", (client, furniture) => {
             this.broadcast("onFurniture", furniture, { except: client });
         });
+
+        this.onMessage("onTokenBuild", (client) => {
+
+            const appID = "144e5463745a4f0092aefd04ff7dbd04"
+            const appCertificate = "1236d148d6244cb79e6733735f9caa42"
+            const expirationTimeInSeconds = 3600
+            const uid = client.sessionId
+            const role = Agora.RtcRole.PUBLISHER
+            const channel = 'coke'
+            const currentTimestamp = Math.floor(Date.now() / 1000)
+            const expirationTimestamp = currentTimestamp + expirationTimeInSeconds
+        
+            const token = Agora.RtcTokenBuilder.buildTokenWithUid(appID, appCertificate, channel, uid, role, expirationTimestamp)
+            
+            console.log(token)
+            client.send("onTokenBuild", token);
+        });
+        
     }
 
     /**
